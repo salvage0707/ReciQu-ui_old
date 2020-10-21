@@ -1,6 +1,10 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
+      
+      <!-- ハンバーガーメニュー -->
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
