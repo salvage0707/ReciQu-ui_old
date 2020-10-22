@@ -23,12 +23,17 @@
 
       <v-spacer></v-spacer>
 
-      <!-- TODO: ユーザー情報を追加 -->
-
-      <v-btn
-        class="font-weight-bold accent-1"
-        color="#FFAB40"
-      >ログイン</v-btn>
+      <!-- 未ログイン -->
+      <div v-if="isLogedin">
+        ログイン中
+      </div>
+      <!-- ログイン済 -->
+      <div v-else>
+        <v-btn
+          class="font-weight-bold accent-1"
+          color="#FFAB40"
+        >ログイン</v-btn>
+      </div>
 
     </v-app-bar>
 
@@ -64,6 +69,14 @@
       drawer: false,
       group: null,
     }),
+    computed: {
+      user() {
+        return this.$store.getters.user;
+      },
+      isLogedin() {
+        return this.$store.getters.isLogedin;
+      }
+    },
     watch: {
       group () {
         this.drawer = false
