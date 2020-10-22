@@ -7,15 +7,15 @@
 
       <div class="d-flex align-center">
 
-        <!-- TODO: アイコンを追加 -->
-        <v-img
+        <!-- TODO: ロゴを追加 -->
+        <!-- <v-img
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
           src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
           transition="scale-transition"
           width="40"
-        />
+        /> -->
 
         <!-- TODO: フォントを変更 -->
         <h1>ReciQu</h1>
@@ -24,6 +24,11 @@
       <v-spacer></v-spacer>
 
       <!-- TODO: ユーザー情報を追加 -->
+
+      <v-btn
+        class="font-weight-bold accent-1"
+        color="#FFAB40"
+      >ログイン</v-btn>
 
     </v-app-bar>
 
