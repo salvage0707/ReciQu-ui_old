@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Header from "./views/layout/Header"
+import Header from "@/views/layout/Header"
 
 export default {
   name: "App",
