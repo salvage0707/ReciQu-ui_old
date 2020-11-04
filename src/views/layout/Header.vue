@@ -25,7 +25,10 @@
 
       <!-- 未ログイン -->
       <div v-if="isLogedin">
-        ログイン中
+        <v-btn
+          class="font-weight-bold accent-1"
+          color="#FFAB40"
+        >ログアウト</v-btn>
       </div>
       <!-- ログイン済 -->
       <div v-else>
@@ -34,7 +37,6 @@
           color="#FFAB40"
         >ログイン</v-btn>
       </div>
-      
 
     </v-app-bar>
 
@@ -70,14 +72,7 @@
       drawer: false,
       group: null,
     }),
-    computed: {
-      user() {
-        return this.$store.getters.user;
-      },
-      isLogedin() {
-        return this.$store.getters.isLogedin;
-      }
-    },
+    computed: {},
     watch: {
       group () {
         this.drawer = false
