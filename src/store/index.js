@@ -5,23 +5,21 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: null,
-    authStatus: false
+    recipes: [],
+    recipeId: 1
   },
   getters: {
-    user(state){
-      return state.user;
-    },
-    isLogedin(state) {
-      return state.authStatus;
+    recipes(state){
+      return state.recipes;
     }
   },
   mutations: {
-    onUserChanged(state, user) {
-      state.user = user;
-    },
-    onAuthStatusChanged(state, status) {
-      state.authStatus = status
+    onRecipeAdd(state, title) {
+      let recipe = {};
+      recipe.id = state.recipeId++;
+      recipe.title = title;
+      
+      state.recipes.push(recipe);
     }
   },
   actions: {},

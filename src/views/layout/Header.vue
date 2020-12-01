@@ -23,16 +23,23 @@
 
       <v-spacer></v-spacer>
 
-      <!-- 未ログイン -->
-      <div v-if="isLogedin">
-        ログイン中
-      </div>
-      <!-- ログイン済 -->
-      <div v-else>
-        <v-btn
-          class="font-weight-bold accent-1"
-          color="#FFAB40"
-        >ログイン</v-btn>
+      <div v-show="!this.$auth.loading">
+        <!-- 未ログイン -->
+        <div v-if="this.$auth.isAuthenticated">
+          <v-btn
+            class="font-weight-bold accent-1"
+            color="#FFAB40"
+            @click="logout"
+          >ログアウト</v-btn>
+        </div>
+        <!-- ログイン済 -->
+        <div v-if="!this.$auth.isAuthenticated">
+          <v-btn
+            class="font-weight-bold accent-1"
+            color="#FFAB40"
+            @click="login"
+          >ログイン</v-btn>
+        </div>
       </div>
       
 
@@ -72,15 +79,23 @@
     }),
     computed: {
       user() {
-        return this.$store.getters.user;
+        return this.$auth.user;
+      }
+    },
+    methods: {
+      login() {
+        this.$router.push({name: "Login"});
       },
-      isLogedin() {
-        return this.$store.getters.isLogedin;
+      logout() {
+        this.$auth.logout();
+        if (this.$route.name != "Home") {
+          this.$router.push({name: "Home"});
+        }
       }
     },
     watch: {
       group () {
-        this.drawer = false
+        this.drawer = false;
       },
     },
   }

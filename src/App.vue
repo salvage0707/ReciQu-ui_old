@@ -1,22 +1,10 @@
 <template>
-  <v-app>
-    <Header />
-
-    <v-main>
-      <router-view></router-view>
-    </v-main>
-  </v-app>
+  <router-view></router-view>
 </template>
 
 <script>
-import Header from "@/views/layout/Header"
-
 export default {
   name: "App",
-
-  components: {
-    Header
-  },
 
   data: () => ({
     //
