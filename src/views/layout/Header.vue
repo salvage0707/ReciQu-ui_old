@@ -41,14 +41,6 @@
           >
         </div>
       </div>
-      <div>
-        <v-btn
-          class="font-weight-bold accent-1"
-          color="#FFAB40"
-          @click="() => (this.$auth.loading = !this.$auth.loading)"
-          >変更</v-btn
-        >
-      </div>
     </v-app-bar>
 
     <!-- TODO: サイドバーのメニューを追加 -->
