@@ -2,13 +2,17 @@
   <PageBase>
      <v-container>
       <div class="about">
-        <h1>This is an about page</h1>
+        <h1>マイレシピ</h1>
       </div>
-      <ul id="example-1">
-        <li v-for="recipe in recipes" :key="recipe.id">
-          {{ recipe }}
-        </li>
-      </ul>
+      <v-row>
+        <ul id="example-1">
+          <li v-for="recipe in recipes" :key="recipe.id">
+            <div>
+              {{ recipe.title }}
+            </div>
+          </li>
+        </ul>
+      </v-row>
      </v-container>
   </PageBase>
 </template>

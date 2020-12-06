@@ -1,10 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import About from "../views/About.vue";
 import Login from "../views/Login.vue";
-import RecipeForm from "../views/RecipeForm.vue";
+import UserRecipes from "../views/user/recipes/UserRecipes.vue";
+import UserNewRecipe from "../views/user/recipes/UserNewRecipe.vue";
 import { getInstance } from "@/lib/auth";
+import { userInitGuard, authGuard } from "./guards";
 
 Vue.use(VueRouter);
 
@@ -20,17 +21,17 @@ const routes = [
     component: Login
   },
   {
-    path: "/about",
-    name: "About",
-    component: About,
+    path: "/users/:user_id/recipes",
+    name: "UserRecipes",
+    component: UserRecipes,
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: "/recipe/add",
-    name: "RecipeForm",
-    component: RecipeForm,
+    path: "/users/:user_id/recipe/new",
+    name: "UserNewRecipe",
+    component: UserNewRecipe,
     meta: {
       requiresAuth: true
     }
@@ -44,33 +45,32 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // 認証チェック
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    const authService = getInstance();
+  const authService = getInstance();
+  let executedNext = false;
 
-    const fn = () => {
-      if (authService.isAuthenticated) {
-        return next();
-      }
-  
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
-    };
-  
-    if (!authService.loading) {
-      return fn();
+  // next()を実行していない場合に処理を実行
+  const executeNextCheck = (func) => {
+    if (!executedNext) {
+      executedNext = func();
     }
-  
-    authService.$watch("loading", loading => {
-      if (loading === false) {
-        return fn();
-      }
-    });
-  } else {
-    next(); 
   }
+
+  // チェック処理の定義
+  const checkFunc = () => {
+    executeNextCheck(() => userInitGuard(to, next, authService));
+    executeNextCheck(() => authGuard(to, next, authService));
+    executeNextCheck(() => next());
+  }
+
+  if (!authService.loading) {
+    return checkFunc();
+  }
+
+  authService.$watch("loading", loading => {
+    if (loading === false) {
+      return checkFunc();
+    }
+  });
 })
 
 export default router;

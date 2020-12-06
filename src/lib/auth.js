@@ -34,18 +34,21 @@ export const useFirebaseAuth = () => {
         loading: true,
         error: null,
         isAuthenticated: false,
-        user: {},
+        user: null,
         idToken: null,
-        idTokenExp: new Date()
+        idTokenExp: new Date(),
+        onceListeners: []
       }
     },
     methods: {
       async login() {
         const provider = new firebase.auth.GoogleAuthProvider();
-        await firebase.auth().signInWithPopup(provider);
+        const result = await firebase.auth().signInWithPopup(provider)
+        await this.updateCurrentUser(result.user);
       },
-      logout() {
+      async logout() {
         firebase.auth().signOut();
+        this.updateCurrentUser(null);
       },
       async getIdToken() {
         if (!this.isAuthenticated) return "";
@@ -62,23 +65,33 @@ export const useFirebaseAuth = () => {
         }
 
         return this.idToken;
+      },
+      async updateCurrentUser(user) {
+        if (user) {
+          this.idToken = user.getIdToken();
+          // TODO: バックエンドからユーザー情報を取得する処理
+          await _sleep(2000).then(() => {
+            this.user = {name: "テスト"}
+          });
+          this.isAuthenticated = true;
+        } else {
+          this.idToken = null;
+          this.user = null;
+          this.isAuthenticated = false;
+        }
       }
     },
     async created() {
-      // ユーザーのログイン状態が変わるたびに実行される処理を定義
-      await firebase.auth().onAuthStateChanged((user) => {
-        this.loading = true;
-
-        if (user) {
-          this.user = user;
-          this.isAuthenticated = true;
-        } else {
-          this.user = {};
-          this.isAuthenticated = false;
-        }
-
+      // Firebase Auth の初期化をした後にユーザー情報を取得する
+      // ユーザー管理は`updateCurrentUser`メソッドを使用するため
+      // 本処理を認証状態の変更ごとに発火しないようにunsubscribeさせる
+      let unsubscribe;
+      unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+        await this.updateCurrentUser(user);
         this.loading = false;
-      })
+        unsubscribe();
+      });
+
     }
   })
 
@@ -90,3 +103,5 @@ export const FirebaseAuth = {
     Vue.prototype.$auth = useFirebaseAuth();
   }
 }
+
+const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

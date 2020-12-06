@@ -8,8 +8,7 @@
       <v-form v-model="valid" @submit.prevent>
 
         <v-text-field
-          v-model="title"
-          :counter="10"
+          v-model="youtubeUrl"
           label="Youtube URL"
           required
         ></v-text-field>
@@ -20,6 +19,8 @@
           label="タイトル"
           required
         ></v-text-field>
+        
+        <Youtube v-if="videoId" :video-id="videoId" ref="youtube"></Youtube>
 
         <v-btn
           color="warning"
@@ -32,10 +33,12 @@
 
 <script>
 import PageBase from "@/views/layout/PageBase.vue";
+import { getIdFromUrl, Youtube } from 'vue-youtube';
 
 export default {
   components: {
-    PageBase
+    PageBase,
+    Youtube
   },
   data() {
     return {
@@ -50,6 +53,12 @@ export default {
     add() {
       this.$store.commit('onRecipeAdd', this.title);
       this.$router.push({name: "About"})
+    }
+  },
+  watch: {
+    youtubeUrl: function(newVal) {
+      this.videoId = getIdFromUrl(newVal);
+      console.log(this.videoId);
     }
   }
 };

@@ -41,6 +41,13 @@
           >ログイン</v-btn>
         </div>
       </div>
+      <div>
+        <v-btn
+          class="font-weight-bold accent-1"
+          color="#FFAB40"
+          @click="() => this.$auth.loading = !this.$auth.loading"
+        >変更</v-btn>
+      </div>
       
 
     </v-app-bar>
@@ -62,7 +69,7 @@
             active-class="lighten-2 text--accent-4"
           >
             <v-list-item>
-              <v-list-item-title>Foo</v-list-item-title>
+              <v-list-item-title @click="linkToUserRecipes(1)">マイレシピ</v-list-item-title>
             </v-list-item>
 
           </v-list-item-group>
@@ -91,6 +98,9 @@
         if (this.$route.name != "Home") {
           this.$router.push({name: "Home"});
         }
+      },
+      linkToUserRecipes(userId) {
+        this.$router.push({name: "UserRecipes", params: {user_id: userId}})
       }
     },
     watch: {
