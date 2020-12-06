@@ -1,10 +1,10 @@
 <template>
   <PageBase>
-     <v-container>
+    <v-container>
       <div class="home">
         <HelloWorld msg="Welcome to Your Vue.js App" />
       </div>
-     </v-container>
+    </v-container>
   </PageBase>
 </template>
 

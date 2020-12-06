@@ -8,7 +8,7 @@ export const userInitGuard = (to, next, authService) => {
     });
     return true;
   }
-}
+};
 
 // 認証チェック
 export const authGuard = (to, next, authService) => {

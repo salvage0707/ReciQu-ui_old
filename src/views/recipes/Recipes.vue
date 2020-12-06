@@ -2,12 +2,12 @@
   <PageBase>
     <v-container>
       <div class="about">
-        <h1>マイレシピ</h1>
+        <h1>レシピ</h1>
       </div>
       <v-row>
         <ul id="example-1">
           <li v-for="recipe in recipes" :key="recipe.id">
-            <div>
+            <div @click="linkToShowRecipe(recipe.id)">
               {{ recipe.title }}
             </div>
           </li>
@@ -25,15 +25,20 @@ export default {
   components: {
     PageBase
   },
+  methods: {
+    linkToShowRecipe(recipeId) {
+      this.$router.push({ name: "ShowRecipe", param: { recipeId: recipeId } });
+    }
+  },
   computed: {
     recipes() {
       return this.$store.getters.recipes;
     }
   },
   created() {
-    this.$store.commit("onRecipeAdd", "てすと1");
-    this.$store.commit("onRecipeAdd", "てすと2");
-    this.$store.commit("onRecipeAdd", "てすと3");
+    this.$store.commit("addRecipe", "てすと1");
+    this.$store.commit("addRecipe", "てすと2");
+    this.$store.commit("addRecipe", "てすと3");
   }
 };
 </script>

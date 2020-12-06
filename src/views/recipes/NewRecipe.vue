@@ -1,12 +1,11 @@
 <template>
   <PageBase>
-     <v-container>
+    <v-container>
       <div class="about">
         <h1>This is an form page</h1>
       </div>
 
       <v-form v-model="valid" @submit.prevent>
-
         <v-text-field
           v-model="youtubeUrl"
           label="Youtube URL"
@@ -19,21 +18,19 @@
           label="タイトル"
           required
         ></v-text-field>
-        
-        <Youtube v-if="videoId" :video-id="videoId" ref="youtube"></Youtube>
 
-        <v-btn
-          color="warning"
-          @click="add"
-        />
+        <div v-show="isShowYoutube" style="height: auto;">
+          <Youtube :videoId="videoId" ref="youtube" width="100%"></Youtube>
+        </div>
+        <v-btn color="warning" @click="add" />
       </v-form>
-     </v-container>
+    </v-container>
   </PageBase>
 </template>
 
 <script>
 import PageBase from "@/views/layout/PageBase.vue";
-import { getIdFromUrl, Youtube } from 'vue-youtube';
+import { getIdFromUrl, Youtube } from "vue-youtube";
 
 export default {
   components: {
@@ -45,20 +42,27 @@ export default {
       valid: false,
       title: "",
       youtubeUrl: "",
-      videoId: "",
+      videoId: null,
       description: ""
-    }
+    };
   },
   methods: {
     add() {
-      this.$store.commit('onRecipeAdd', this.title);
-      this.$router.push({name: "About"})
+      this.$store.commit("addRecipe", this.title);
+      this.$router.push({ name: "Recipes" });
+    }
+  },
+  computed: {
+    isShowYoutube() {
+      return !!this.videoId;
     }
   },
   watch: {
     youtubeUrl: function(newVal) {
       this.videoId = getIdFromUrl(newVal);
-      console.log(this.videoId);
+    },
+    videoId: function(newVal) {
+      this.$refs.youtube.updatePlayer(newVal);
     }
   }
 };

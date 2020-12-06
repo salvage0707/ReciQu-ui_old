@@ -11,7 +11,8 @@
             class="font-weight-bold accent-1"
             color="#FFAB40"
             @click="login"
-          >Sign in with Google</v-btn>
+            >Sign in with Google</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
@@ -35,7 +36,7 @@ export default {
       if (this.$route.query.redirect) {
         this.$router.push(this.$route.query.redirect);
       } else {
-        this.$router.push({name: "Home"});
+        this.$router.push({ name: "Home" });
       }
     }
   },
@@ -44,5 +45,5 @@ export default {
       this.redirect();
     }
   }
-}
+};
 </script>

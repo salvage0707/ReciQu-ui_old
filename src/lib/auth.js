@@ -1,4 +1,4 @@
-import Vue from "vue"
+import Vue from "vue";
 import firebase from "@firebase/app";
 import "@firebase/auth";
 
@@ -38,12 +38,12 @@ export const useFirebaseAuth = () => {
         idToken: null,
         idTokenExp: new Date(),
         onceListeners: []
-      }
+      };
     },
     methods: {
       async login() {
         const provider = new firebase.auth.GoogleAuthProvider();
-        const result = await firebase.auth().signInWithPopup(provider)
+        const result = await firebase.auth().signInWithPopup(provider);
         await this.updateCurrentUser(result.user);
       },
       async logout() {
@@ -58,10 +58,10 @@ export const useFirebaseAuth = () => {
 
         // 有効期限チェック
         if (!this.idToken || this.idTokenExp.getTime() < nowTime) {
-          await this.user.getIdTokenResult(true).then((result) => {
+          await this.user.getIdTokenResult(true).then(result => {
             this.idToken = result.token;
             this.idTokenExp = new Date(result.expirationTime);
-          })
+          });
         }
 
         return this.idToken;
@@ -71,7 +71,7 @@ export const useFirebaseAuth = () => {
           this.idToken = user.getIdToken();
           // TODO: バックエンドからユーザー情報を取得する処理
           await _sleep(2000).then(() => {
-            this.user = {name: "テスト"}
+            this.user = { name: "テスト" };
           });
           this.isAuthenticated = true;
         } else {
@@ -86,22 +86,21 @@ export const useFirebaseAuth = () => {
       // ユーザー管理は`updateCurrentUser`メソッドを使用するため
       // 本処理を認証状態の変更ごとに発火しないようにunsubscribeさせる
       let unsubscribe;
-      unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+      unsubscribe = firebase.auth().onAuthStateChanged(async user => {
         await this.updateCurrentUser(user);
         this.loading = false;
         unsubscribe();
       });
-
     }
-  })
+  });
 
   return instance;
-}
+};
 
 export const FirebaseAuth = {
   install(Vue) {
     Vue.prototype.$auth = useFirebaseAuth();
   }
-}
+};
 
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
