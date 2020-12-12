@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     linkToShowRecipe(recipeId) {
-      this.$router.push({ name: "ShowRecipe", param: { recipeId: recipeId } });
+      this.$router.push({ name: "ShowRecipe", params: { recipeId: recipeId } });
     }
   },
   computed: {
@@ -36,9 +36,41 @@ export default {
     }
   },
   created() {
-    this.$store.commit("addRecipe", "てすと1");
-    this.$store.commit("addRecipe", "てすと2");
-    this.$store.commit("addRecipe", "てすと3");
+
+    let payload = {
+      title: "",
+      description: "",
+      youtubeVideoId: "y40UDioGgAc",
+      userId: 1
+    }
+    payload.description = `
+      【フライド大根】
+    是非お試しください！
+
+    ☆2019年レシピ本大賞入選☆
+    【クタクタでも速攻でつくれる!バズレシピ太らないおかず編】
+    →https://www.amazon.co.jp/dp/4594613705
+
+    ★今回のレシピはこちら↓
+    #めっちゃうま い
+    #バズレシピ
+    #リュウジレシピ
+
+    フリーBGM
+    DOVA-SYNDROME
+    https://dova-s.jp/
+
+    効果音ラボ
+    https://soundeffect-lab.info/
+    `;
+    payload.title = "テスト1タイトル";
+    this.$store.commit("addRecipe", payload);
+
+    payload.title = "テスト2タイトル";
+    this.$store.commit("addRecipe", payload);
+
+    payload.title = "テスト3タイトル";
+    this.$store.commit("addRecipe", payload);
   }
 };
 </script>

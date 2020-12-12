@@ -19,6 +19,13 @@
           required
         ></v-text-field>
 
+        <v-textarea
+          name="input-7-1"
+          label="概要"
+          hint="レシピの概要を入力してください"
+          v-model="description"
+        ></v-textarea>
+
         <div v-show="isShowYoutube" style="height: auto;">
           <Youtube :videoId="videoId" ref="youtube" width="100%"></Youtube>
         </div>
@@ -48,8 +55,17 @@ export default {
   },
   methods: {
     add() {
-      this.$store.commit("addRecipe", this.title);
-      this.$router.push({ name: "Recipes" });
+      const nextId = this.$store.getters.nextRecipeId;
+
+      const payload = {
+        title: this.title,
+        description: this.description,
+        youtubeVideoId: this.videoId,
+        userId: this.$auth.user.id
+      }
+      this.$store.commit("addRecipe", payload);
+
+      this.$router.push({ name: "ShowRecipe", params: { recipeId: nextId } });
     }
   },
   computed: {

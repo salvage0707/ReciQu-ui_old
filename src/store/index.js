@@ -11,16 +11,23 @@ export default new Vuex.Store({
   getters: {
     recipes(state) {
       return state.recipes;
+    },
+    nextRecipeId(state) {
+      return state.recipeId + 1;
+    },
+    findRecipe: (state) => (id) => {
+      return state.recipes.find(recipe => recipe.id === id );
     }
   },
   mutations: {
-    addRecipe(state, title) {
+    // title, description, youtubeVideoId, userId
+    addRecipe(state, payload) {
       let recipe = {};
       recipe.id = state.recipeId++;
-      recipe.title = title;
-      recipe.thumbnailUrl =
-        "https://d1f5hsy4d47upe.cloudfront.net/e2/e2c42a74de4dcb8e9eace7f55e956757_t.jpeg";
-      recipe.userId = 1;
+      recipe.title = payload.title;
+      recipe.description = payload.description;
+      recipe.youtubeVideoId = payload.youtubeVideoId;
+      recipe.userId = payload.userId;
 
       state.recipes.push(recipe);
     }

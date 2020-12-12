@@ -31,9 +31,9 @@ export default {
     }
   },
   created() {
-    this.$store.commit("onRecipeAdd", "てすと1");
-    this.$store.commit("onRecipeAdd", "てすと2");
-    this.$store.commit("onRecipeAdd", "てすと3");
+    const recipeId = this.$route.params.recipeId;
+
+    this.recipe = this.$store.getters.findRecipe(recipeId);
   }
 };
 </script>
